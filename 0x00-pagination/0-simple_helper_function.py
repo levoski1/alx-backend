@@ -3,7 +3,6 @@
 This module provides a function to calculate the start and end indexes
 for paginated data.
 """
-
 from typing import Tuple
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
@@ -16,7 +15,7 @@ def index_range(page: int, page_size: int) -> Tuple[int, int]:
         page_size (int): The number of items per page.
 
     Returns:
-        Tuple[int, int]: A tuple containing the start index (inclusive) 
+        Tuple[int, int]: A tuple containing the start index (inclusive)
         and the end index (exclusive) for the items on the specified page.
     """
     first_index: int = (page - 1) * page_size
