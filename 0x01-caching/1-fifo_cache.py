@@ -1,54 +1,33 @@
 #!/usr/bin/env python3
+"""First-In First-Out caching module.
 """
-Module: fifo_cache
-This module implements a FIFO (First-In-First-Out) cache.
-"""
+from collections import OrderedDict
 
-from basecaching import BaseCaching
-from typing import Dict, Tuple, List, Any
+from base_caching import BaseCaching
+
 
 class FIFOCache(BaseCaching):
+    """Represents an object that allows storing and
+    retrieving items from a dictionary with a FIFO
+    removal mechanism when the limit is reached.
     """
-    FIFOCache class that inherits from BaseCaching.
-    Implements a FIFO caching mechanism where the oldest item is discarded first.
-    """
-    
-    def __init__(self) -> None:
-        """
-        Initializes an instance of FIFOCache.
+    def __init__(self):
+        """Initializes the cache.
         """
         super().__init__()
-        self.cache_data = {}
+        self.cache_data = OrderedDict()
 
-    def put(self, key, item) -> None:
+    def put(self, key, item):
+        """Adds an item in the cache.
         """
-        Adds an item to the cache with the specified key.
+        if key is None or item is None:
+            return
+        self.cache_data[key] = item
+        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            first_key, _ = self.cache_data.popitem(False)
+            print("DISCARD:", first_key)
 
-        If the cache reaches its maximum capacity, the oldest item is discarded.
-
-        Args:
-            key (str): The key for the cache item.
-            item (any): The item to be cached.
-
-        Returns:
-            None
-        """
-        if key and item:
-            if len(self.cache_data) >= self.MAX_ITEMS:
-                first = next(iter(self.cache_data))
-                print(f'Discard: {first}')
-                del self.cache_data[first]
-            
-            self.cache_data[key] = item
-
-    def get(self, key) -> Dict[str, Any]:
-        """
-        Retrieves an item from the cache by its key.
-
-        Args:
-            key (str): The key for the cache item to retrieve.
-
-        Returns:
-            The cached item, or None if the key is not found.
+    def get(self, key):
+        """Retrieves an item by key.
         """
         return self.cache_data.get(key, None)
