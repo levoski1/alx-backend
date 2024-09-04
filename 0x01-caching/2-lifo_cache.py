@@ -1,9 +1,14 @@
-from basecaching import BaseCaching
+#!/usr/bin/env python3
+"""Least Recently Used caching module.
+"""
 from collections import OrderedDict
 
-class LIFOCache(BaseCaching):
+from base_caching import BaseCaching
+
+
+class LRUCache(BaseCaching):
     """Represents an object that allows storing and
-    retrieving items from a dictionary with a LIFO
+    retrieving items from a dictionary with a LRU
     removal mechanism when the limit is reached.
     """
     def __init__(self):
@@ -19,12 +24,16 @@ class LIFOCache(BaseCaching):
             return
         if key not in self.cache_data:
             if len(self.cache_data) + 1 > BaseCaching.MAX_ITEMS:
-                last_key, _ = self.cache_data.popitem(True)
-                print("DISCARD:", last_key)
-        self.cache_data[key] = item
-        self.cache_data.move_to_end(key, last=True)
+                lru_key, _ = self.cache_data.popitem(True)
+                print("DISCARD:", lru_key)
+            self.cache_data[key] = item
+            self.cache_data.move_to_end(key, last=False)
+        else:
+            self.cache_data[key] = item
 
     def get(self, key):
         """Retrieves an item by key.
         """
+        if key is not None and key in self.cache_data:
+            self.cache_data.move_to_end(key, last=False)
         return self.cache_data.get(key, None)

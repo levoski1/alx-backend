@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Least Recently Used caching module.
+"""Most Recently Used caching module.
 """
 from collections import OrderedDict
-from basecaching import BaseCaching
+
+from base_caching import BaseCaching
 
 
 class MRUCache(BaseCaching):

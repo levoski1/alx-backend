@@ -2,7 +2,8 @@
 """Least Recently Used caching module.
 """
 from collections import OrderedDict
-from basecaching import BaseCaching
+
+from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
