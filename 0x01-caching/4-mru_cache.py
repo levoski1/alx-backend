@@ -7,7 +7,7 @@ from basecaching import BaseCaching
 
 class MRUCache(BaseCaching):
     """Represents an object that allows storing and
-    retrieving items from a dictionary with a LRU
+    retrieving items from a dictionary with an MRU
     removal mechanism when the limit is reached.
     """
     def __init__(self):
@@ -29,7 +29,6 @@ class MRUCache(BaseCaching):
             self.cache_data.move_to_end(key, last=False)
         else:
             self.cache_data[key] = item
-                
 
     def get(self, key):
         """Retrieves an item by key.

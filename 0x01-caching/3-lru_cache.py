@@ -19,17 +19,20 @@ class LRUCache(BaseCaching):
     def put(self, key, item):
         """Adds an item in the cache.
         """
-        if key and item:
-            if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                first = next(iter(self.cache_data))
-                print(f"DISCARD: {first}")
-                del self.cache_data[first]
+        if key is None or item is None:
+            return
+        if key not in self.cache_data:
+            if len(self.cache_data) + 1 > BaseCaching.MAX_ITEMS:
+                lru_key, _ = self.cache_data.popitem(True)
+                print("DISCARD:", lru_key)
             self.cache_data[key] = item
-            self.cache_data.move_to_end(key,last=True)
+            self.cache_data.move_to_end(key, last=False)
+        else:
+            self.cache_data[key] = item
 
     def get(self, key):
-        if not key in self.cache_data or key == None:
-            return None
-        value = self.cache_data.pop(key)
-        self.cache_data[key] = value
-        return value
+        """Retrieves an item by key.
+        """
+        if key is not None and key in self.cache_data:
+            self.cache_data.move_to_end(key, last=False)
+        return self.cache_data.get(key, None)
